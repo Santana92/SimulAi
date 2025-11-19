@@ -1,14 +1,19 @@
+import os
+from dotenv import load_dotenv
 from passlib.context import CryptContext
 from datetime import datetime, timedelta, timezone
 from jose import JWTError, jwt
 from pydantic import BaseModel
 from typing import Optional
 
+# Carrega as variáveis de ambiente do arquivo .env
+load_dotenv()
+
 # --- Configuração de Senha ---
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 # --- Configuração do JWT ---
-SECRET_KEY = "your-super-secret-key"  # Mude isso para uma chave segura em produção!
+SECRET_KEY = os.getenv("SECRET_KEY")  # Carrega a chave secreta do ambiente
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 

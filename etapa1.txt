@@ -1,0 +1,165 @@
+## 🎯 PROMPT PARA IMPLEMENTAÇÃO DO SISTEMA EDUCACIONAL
+
+**Contexto:** Criar um sistema de avaliação onde professores criam matérias com senha, alunos se cadastram usando RA, e a IA gera e corrige questões baseadas no texto fornecido pelo professor.
+
+**Requisitos do Banco de Dados:**
+
+### 📊 TABELAS NECESSÁRIAS:
+
+```sql
+-- Tabela de Professores
+CREATE TABLE professores (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    senha_hash VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Tabela de Matérias
+CREATE TABLE materias (
+    id SERIAL PRIMARY KEY,
+    professor_id INTEGER REFERENCES professores(id) ON DELETE CASCADE,
+    nome VARCHAR(100) NOT NULL,
+    descricao TEXT,
+    senha_acesso VARCHAR(50) NOT NULL, -- Senha para alunos se cadastrarem
+    texto_base TEXT NOT NULL, -- Texto fornecido pelo professor para a IA
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    ativa BOOLEAN DEFAULT true
+);
+
+-- Tabela de Alunos
+CREATE TABLE alunos (
+    id SERIAL PRIMARY KEY,
+    ra VARCHAR(20) UNIQUE NOT NULL, -- ID único do aluno (RA)
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    senha_hash VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Tabela de Inscrições (Relacionamento Aluno-Matéria)
+CREATE TABLE inscricoes (
+    id SERIAL PRIMARY KEY,
+    aluno_id INTEGER REFERENCES alunos(id) ON DELETE CASCADE,
+    materia_id INTEGER REFERENCES materias(id) ON DELETE CASCADE,
+    data_inscricao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(aluno_id, materia_id)
+);
+
+-- Tabela de Questões
+CREATE TABLE questoes (
+    id SERIAL PRIMARY KEY,
+    materia_id INTEGER REFERENCES materias(id) ON DELETE CASCADE,
+    pergunta TEXT NOT NULL,
+    tipo VARCHAR(20) DEFAULT 'multipla_escolha', -- multipla_escolha, verdadeiro_falso, dissertativa
+    opcoes JSONB, -- {"A": "Opção A", "B": "Opção B", "C": "Opção C", "D": "Opção D"}
+    resposta_correta VARCHAR(10) NOT NULL,
+    nivel_dificuldade VARCHAR(20) DEFAULT 'medio',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Tabela de Avaliações (Sessões de Prova)
+CREATE TABLE avaliacoes (
+    id SERIAL PRIMARY KEY,
+    materia_id INTEGER REFERENCES materias(id) ON DELETE CASCADE,
+    titulo VARCHAR(100) NOT NULL,
+    descricao TEXT,
+    quantidade_questoes INTEGER DEFAULT 10,
+    tempo_limite INTEGER, -- em minutos
+    disponivel_ate TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Tabela de Respostas dos Alunos
+CREATE TABLE respostas_alunos (
+    id SERIAL PRIMARY KEY,
+    aluno_id INTEGER REFERENCES alunos(id) ON DELETE CASCADE,
+    questao_id INTEGER REFERENCES questoes(id) ON DELETE CASCADE,
+    avaliacao_id INTEGER REFERENCES avaliacoes(id) ON DELETE CASCADE,
+    resposta_aluno VARCHAR(500) NOT NULL,
+    correta BOOLEAN DEFAULT false,
+    nota DECIMAL(5,2) DEFAULT 0,
+    feedback_ia TEXT,
+    tempo_resposta INTEGER, -- em segundos
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Tabela de Desempenho (Resumo por Avaliação)
+CREATE TABLE desempenho (
+    id SERIAL PRIMARY KEY,
+    aluno_id INTEGER REFERENCES alunos(id) ON DELETE CASCADE,
+    avaliacao_id INTEGER REFERENCES avaliacoes(id) ON DELETE CASCADE,
+    materia_id INTEGER REFERENCES materias(id) ON DELETE CASCADE,
+    total_questoes INTEGER DEFAULT 0,
+    acertos INTEGER DEFAULT 0,
+    nota_final DECIMAL(5,2) DEFAULT 0,
+    tempo_total INTEGER DEFAULT 0, -- em segundos
+    data_conclusao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+### 🔑 ÍNDICES PARA PERFORMANCE:
+```sql
+CREATE INDEX idx_inscricoes_aluno ON inscricoes(aluno_id);
+CREATE INDEX idx_inscricoes_materia ON inscricoes(materia_id);
+CREATE INDEX idx_questoes_materia ON questoes(materia_id);
+CREATE INDEX idx_respostas_aluno ON respostas_alunos(aluno_id);
+CREATE INDEX idx_respostas_avaliacao ON respostas_alunos(avaliacao_id);
+CREATE INDEX idx_desempenho_aluno ON desempenho(aluno_id);
+CREATE INDEX idx_desempenho_materia ON desempenho(materia_id);
+```
+
+### 🚀 IMPLEMENTAÇÃO NO VERCEL:
+
+**1. Configuração do Environment:**
+```env
+DATABASE_URL=postgresql://neondb_owner:npg_5NnIEqvt4bpk@ep-cold-wildflower-acf41t3o-pooler.sa-east-1.aws.neon.tech/neondb?sslmode=require
+SECRET_KEY=kfaskldoi23DS@dsadf2
+```
+
+**2. Script de Inicialização:**
+```sql
+-- Execute este script no seu banco Neon para criar as tabelas
+```
+
+### 📈 RELATÓRIOS PARA O PROFESSOR:
+
+**Consulta para Relatório Geral da Turma:**
+```sql
+SELECT 
+    m.nome as materia,
+    COUNT(DISTINCT i.aluno_id) as total_alunos,
+    AVG(d.nota_final) as media_turma,
+    MAX(d.nota_final) as maior_nota,
+    MIN(d.nota_final) as menor_nota
+FROM materias m
+LEFT JOIN inscricoes i ON m.id = i.materia_id
+LEFT JOIN desempenho d ON m.id = d.materia_id
+WHERE m.id = [ID_DA_MATERIA]
+GROUP BY m.id, m.nome;
+```
+
+**Consulta para Desempenho Individual:**
+```sql
+SELECT 
+    a.nome as aluno,
+    a.ra,
+    d.nota_final,
+    d.acertos,
+    d.total_questoes,
+    ROUND((d.acertos::DECIMAL / d.total_questoes) * 100, 2) as percentual_acerto
+FROM alunos a
+JOIN desempenho d ON a.id = d.aluno_id
+WHERE d.materia_id = [ID_DA_MATERIA]
+ORDER BY d.nota_final DESC;
+```
+
+### 🔄 FLUXO DO SISTEMA:
+
+1. **Professor:** Cria matéria + texto base + senha
+2. **Aluno:** Usa RA + senha da matéria para se inscrever
+3. **IA:** Gera questões embaralhadas do texto base
+4. **Aluno:** Responde questões (ordem aleatória)
+5. **IA:** Corrige, dá nota e feedback
+6. **Professor:** Acessa relatórios de desempenho
