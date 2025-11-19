@@ -1,0 +1,939 @@
+/* ==========================================================================
+   ESTILOS GLOBAIS
+   ========================================================================== */
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #fafafa;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  width: 100%;
+  padding: 30px 20px;
+  margin-top: 80px;
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   CABEÇALHO (HEADER)
+   ========================================================================== */
+
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  padding: 35px 30px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  height: 60px;
+  box-sizing: border-box;
+  border-bottom: 1px solid #cdcdcd;
+}
+
+.logo img {
+  height: 30px;
+  width: auto;
+}
+
+.welcome-user {
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.avatar.user {
+  width: 34px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  padding-top: 5px;
+}
+
+.user-menu {
+  position: relative;
+}
+
+.dropdown {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 50px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  list-style: none;
+  padding: 8px 0;
+  margin: 0;
+  width: 180px;
+}
+
+.dropdown li {
+  padding: 8px 15px;
+}
+
+.dropdown li a {
+  text-decoration: none;
+  color: #333;
+  display: block;
+}
+
+.dropdown li a:hover {
+  background: #f5f5f5;
+}
+
+.dropdown hr {
+  margin: 5px 0;
+  border: none;
+  border-top: 1px solid #ddd;
+}
+
+/* ==========================================================================
+   COMPONENTES DE CARD (Matérias e Simulados)
+   ========================================================================== */
+
+.arrow {
+  font-size: 20px;
+  vertical-align: middle;
+  transition: transform 0.3s ease;
+}
+
+.arrow.open {
+  transform: rotate(90deg);
+}
+
+.card {
+  width: 100%;
+  box-sizing: border-box;
+  border: 2px solid #007bff;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.card-header {
+  user-select: none;
+  padding: 20px 20px;
+  font-weight: bold;
+  color: #3C3C3C;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-content {
+  display: none;
+  padding: 5px 20px 15px 20px;
+}
+
+.card-content.active {
+  display: block;
+}
+
+.simulado-item {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.simulado-item:last-child {
+  border-bottom: none;
+}
+
+.simulado {
+  user-select: none;
+  padding: 12px;
+  cursor: pointer;
+}
+
+.titulo-simulado {
+  font-weight: 500;
+}
+
+.simulado-options {
+  display: none;
+  padding: 15px 10px 10px 10px;
+  margin-top: 10px;
+  background: #fff;
+  border-left: 3px solid #007bff;
+}
+
+.simulado-options.active {
+  display: block;
+}
+
+.simulado-option-item {
+  display: flex;
+  align-items: flex-start;
+  padding: 5px;
+  padding-left: 10px;
+  gap: 15px;
+  cursor: pointer;
+  background-color: #fff;
+  margin-bottom: 20px;
+}
+
+.simulado-option-item:last-child {
+  margin-bottom: 0;
+}
+
+.simulado-option-item img {
+  width: 20px;
+  height: 22px;
+  margin-top: 6px;
+}
+
+.simulado-option-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.simulado-option-text h4 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #2c2c2c;
+}
+
+.simulado-option-text p {
+  margin: 4px 0 0 0;
+  font-size: 13px;
+  color: #6f6f6f;
+  line-height: 1.3;
+}
+
+/* ==========================================================================
+   GRID DE ALUNOS
+   ========================================================================== */
+
+.lista-alunos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+}
+
+.card-aluno {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 10px 14px;
+  gap: 10px;
+}
+
+.info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.nome {
+  font-weight: 600;
+  font-size: 14px;
+  color: #333;
+}
+
+.id {
+  font-size: 12px;
+  color: #777;
+}
+
+.avatar.aluno {
+  width: 26px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.pontuacao {
+  background: #222;
+  color: #fff;
+  border-radius: 8px;
+  padding: 6px 6px;
+  text-align: center;
+  min-width: 60px;
+  font-size: 12px;
+}
+
+.pontuacao span {
+  display: block;
+  font-size: 10px;
+  opacity: 0.8;
+}
+
+.pontuacao strong {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   BOTÕES
+   ========================================================================== */
+
+.btn {
+  background: #007bff;
+  color: #fff;
+  text-align: center;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: bold;
+  width: 100%;
+  margin-top: 20px;
+  transition: all 0.2s ease;
+}
+
+.btn:hover {
+  background: #0056b3;
+}
+
+.fab {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 2px solid #1e66ff;
+  background: #1e66ff;
+  color: #fff;
+  font-size: 24px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, .15);
+  cursor: pointer;
+}
+
+.fab:active {
+  transform: translateY(2px);
+}
+
+@media (min-width: 1024px) {
+  .fab {
+    right: 32px;
+    bottom: 32px;
+  }
+}
+
+/* ==========================================================================
+   POPUP (MODAL)
+   ========================================================================== */
+
+.popup-overlay {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 200;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  position: relative;
+  animation: fadeIn 0.3s ease;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #333;
+}
+
+.popup-label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+.popup-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+}
+
+.popup-input-file {
+  display: block;
+  margin-top: 6px;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+.popup-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.btn-cancel {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  background: #ccc;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn-cancel:hover {
+  background: #aaa;
+}
+
+.btn-confirm {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  background: #007bff;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn-confirm:hover {
+  background: #0056b3;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ==========================================================================
+   GRIDS E ÍCONES ADICIONAIS
+   ========================================================================== */
+
+.grid {
+  padding: 10px;
+  border-radius: 15px;
+  border: 0.5px solid rgba(115, 115, 115, 0.35);
+}
+
+.grid.alunos {
+  margin-top: 25px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.user-icons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.adicionar.aluno {
+  border:2px solid #007bff; background:#007bff; color:#fff;
+  width:25px; height:25px; border-radius:50%;
+  font-size:12px; line-height:1; display:flex; align-items:center; justify-content:center;
+  cursor:pointer
+}
+
+.adicionar.aluno:hover {
+  border:2px solid #0056b3; background:#0056b3;
+}
+
+.material-icons.bolder{
+  font-size: 24px;
+  -webkit-text-stroke: 1px black;
+}
+
+
+/* ==========================================================================
+   TELA DE LOGIN
+   ========================================================================== */
+
+.login-page-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 900px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.login-box {
+    display: flex;
+    background-color: #fff;
+    border-radius: 12px;
+    border: 3px solid #007bff;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.login-form-area {
+    flex: 1;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.login-header h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.login-header p {
+    color: #666;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
+
+.input-group input {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+    margin-top: 5px;
+}
+
+.manter-conectado {
+    display: flex;
+    align-items: center;
+}
+
+.manter-conectado input {
+    margin-right: 5px;
+}
+
+.form-options a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.primary-btn {
+    background-color: #007bff;
+    color: #fff;
+    margin-top: 10px;
+}
+
+.primary-btn:hover {
+    background-color: #0056b3;
+}
+
+.google-btn {
+    background-color: #f8f9fa;
+    color: #333;
+    border: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.google-btn img {
+    height: 20px;
+    margin-right: 10px;
+}
+
+.google-btn:hover {
+    background-color: #e2e6ea;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #999;
+    font-size: 0.8rem;
+    margin: 15px 0;
+}
+
+.divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #ddd;
+}
+
+.divider:not(:empty)::before {
+    margin-right: .5em;
+}
+
+.divider:not(:empty)::after {
+    margin-left: .5em;
+}
+
+.login-image-area {
+    flex: 1;
+}
+
+.login-image-area img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+/* ==========================================================================
+   SIMULADO (QUIZ)
+   ========================================================================== */
+
+.simulado-container {
+  width: 100%;
+  max-width: 800px; /* Limita a largura do quiz para melhor leitura */
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.simulado-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.simulado-header h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.quiz-container {
+  background: #fff;
+  border: 2px solid #007bff; /* Borda azul em destaque */
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.question {
+  margin-bottom: 20px;
+}
+
+.question:last-child {
+  margin-bottom: 0;
+}
+
+.question h3 {
+  margin: 0 0 15px 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.question p {
+  margin: 0 0 20px 0;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.option {
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.option:hover {
+  background-color: #f0f0f0;
+}
+
+/* Estado da Opção */
+.option.selected {
+  background-color: #007bff; /* Opção selecionada pelo usuário */
+  color: #fff;
+  border-color: #007bff;
+}
+
+.option.correct {
+  border: 2px solid #28a745; /* Resposta correta (verde) */
+  background: #e6f4ea;
+  color: #1e7e34;
+}
+
+.option.incorrect {
+  border: 2px solid #dc3545; /* Resposta incorreta (vermelho) */
+  background: #fbeaea;
+  color: #a71d2a;
+}
+
+.actions {
+  text-align: center;
+  margin-top: 15px;
+}
+
+#next-btn {
+  display: block;
+}
+
+#restart-btn {
+  margin-top: 12px;
+}
+
+/* Resultado */
+.resultado-container {
+  background: #fff;
+  border: 2px solid #007bff;
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.resultado-container h3 {
+  margin: 0 0 15px 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+#gabarito p {
+  margin: 10px 0;
+  font-size: 16px;
+}
+
+#gabarito .correct {
+  color: green;
+}
+
+#gabarito .incorrect {
+  color: red;
+}
+
+/* Explicações */
+.explanation {
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+  font-size: 14px;
+}
+
+.explanation .material-icons {
+  font-size: 18px;
+  margin-right: 5px;
+}
+
+.explanation.correct {
+  color: #28a745;
+  font-weight: 600;
+}
+
+.explanation.incorrect {
+  color: #dc3545;
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   BOTÕES (Estilos do Quiz)
+   ========================================================================== */
+
+.btn {
+  background: #007bff;
+  color: #fff;
+  text-align: center;
+  padding: 12px 30px; /* Padding ajustado para botões do quiz */
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: all 0.2s ease;
+}
+
+.btn:hover {
+  background: #0056b3;
+}
+
+/* ===== FEEDBACK CONTAINER ===== */
+.feedback-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* ===== ALUNO INFO ===== */
+.aluno-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.aluno-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-right: 20px;
+}
+
+.aluno-dados h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.aluno-dados p {
+  margin: 5px 0 0 0;
+  font-size: 16px;
+  color: #666;
+}
+
+/* ===== FEEDBACK CARD ===== */
+.feedback-card {
+  background: #fff;
+  border: 2px solid #007bff;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.feedback-header {
+  padding: 20px;
+  background-color: #007bff;
+  color: #fff;
+}
+
+.feedback-header h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.feedback-body {
+  padding: 20px;
+}
+
+/* ===== FEEDBACK ITEM ===== */
+.feedback-item {
+  margin-bottom: 20px;
+}
+
+.feedback-item:last-child {
+  margin-bottom: 0;
+}
+
+.feedback-item h4 {
+  margin: 0 0 10px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+
+.feedback-item p {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #555;
+}
+
+/* ===== ACTIONS ===== */
+.actions {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.btn {
+  background: #007bff;
+  color: #fff;
+  text-align: center;
+  padding: 12px 30px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: all 0.2s ease;
+}
+
+.btn:hover {
+  background: #0056b3;
+}
+
+
+/* ==========================================================================
+   RESPONSIVIDADE
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    .login-box {
+        flex-direction: column;
+    }
+    
+    .login-image-area {
+        display: none;
+    }
+}
+
+.student-dashboard-container {
+  width: 100%;
+  padding: 30px 20px;
+  margin-top: 80px;
+  box-sizing: border-box;
+}
